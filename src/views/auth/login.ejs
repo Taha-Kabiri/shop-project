@@ -1,0 +1,14 @@
+
+<h2> Login to your account </h2>
+
+<%- include('../partials/message') %>
+
+<form method="POST" action="/api/auth/login" class="auth-form">
+  <label for="email">email</label>
+  <input type="text" id="emailorname" name="emailorname" required />
+
+  <label for="password">password</label>
+  <input type="password" id="password" name="password" required />
+
+  <button type="submit">login</button>
+</form>

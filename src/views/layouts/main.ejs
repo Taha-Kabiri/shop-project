@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title || "فروشگاه مدرن" %></title>
+
+  <style>
+    /* 🎨  */
+    :root {
+      --primary-color: #6a1b9a; 
+      --accent-color: #ffb300; 
+      --background-light: #f3e5f5; 
+      --text-dark: #212121;
+      --error-bg: #ffebee;
+      --error-text: #c62828;
+      --card-bg: #ffffff;
+      --transition-speed: 0.3s;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Tahoma', sans-serif;
+      background: var(--background-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* 🧭 hedear/Navbar */
+    header {
+      background: var(--primary-color);
+      padding: 15px 25px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    header h2 {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--accent-color);
+      font-weight: bold;
+      margin-right: 15px;
+      transition: color var(--transition-speed);
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    /* container orginal */
+    .container {
+      width: 90%;
+      max-width: 500px; 
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: box-shadow var(--transition-speed);
+    }
+
+    /* style forms  */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 5px;
+      color: var(--primary-color);
+    }
+
+    input {
+      padding: 12px 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      transition: all var(--transition-speed);
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+      outline: none;
+    }
+
+    button {
+      padding: 12px;
+      background: var(--primary-color);
+      color: var(--accent-color);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background var(--transition-speed), transform 0.1s;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+    }
+
+    button:hover {
+      background: #7b1fa2; 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(106, 27, 154, 0.6);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+    }
+
+   /* message errores */
+    .message.error {
+      background: var(--error-bg);
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      color: var(--error-text);
+      font-size: 14px;
+      border-right: 4px solid var(--error-text);
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* message successfly */
+    .message.success {
+      background: #e8f5e9; 
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      color: #2e7d32; 
+      font-size: 14px;
+      border-right: 4px solid #2e7d32;
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('../partials/navbar') %>
+
+  <div class="container">
+    <%- body %>
+  </div>
+
+</body>
+</html>
