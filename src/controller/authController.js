@@ -71,13 +71,19 @@ exports.login = async (req, res) => {
       return res.redirect("/api/auth/login");
     }
 
+    req.session.user = {
+      id: finduser._id,
+      name: finduser.name,
+      role: finduser.role,
+      wallet: finduser.wallet || 0,
+    };
+
     const token = jwt.sign({ id: finduser._id }, JWT_SECRET, {
       expiresIn: "7d",
     });
 
-    // در صورت موفقیت، به لابی هدایت شود
     req.flash("success", "ورود شما با موفقیت انجام شد. خوش آمدید.");
-    return res.redirect("/lobby");
+    return res.redirect("/products/dashboard");
   } catch (err) {
     console.error(err);
     req.flash("errors", [{ msg: "خطای داخلی سرور." }]);
@@ -109,5 +115,20 @@ exports.registerUser = (req, res) => {
 exports.lobbyPage = (req, res) => {
   res.render("pages/lobby", {
     title: "خانه",
+  });
+};
+
+// logout
+
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+
+      return res.redirect("/api/auth/login?error=true");
+    }
+
+    res.clearCookie("connect.sid");
+    return res.redirect("/api/auth/login?success=loggedOut");
   });
 };

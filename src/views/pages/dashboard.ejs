@@ -1,0 +1,93 @@
+
+<h2 style="color: var(--primary-color); margin-bottom: 20px;">
+  خوش اومدی <%= user?.name || "کاربر عزیز" %> ✨
+</h2>
+
+<% if (user && user.role === 'admin') { %>
+  <div style="margin-bottom: 25px; text-align: right;">
+    <a href="/products/add" style="
+      background: var(--primary-color);
+      color: var(--accent-color);
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    ">
+      ➕ افزودن محصول جدید
+    </a>
+  </div>
+<% } %>
+
+<p style="margin-bottom: 25px; color: #444;">
+  اینجا داشبورد اختصاصی توئه — می‌تونی محصولات رو ببینی و به سبد خریدت اضافه کنی.
+</p>
+
+
+<hr style="margin: 25px 0; border: none; border-top: 2px solid #ddd;">
+
+
+<h3 style="color: var(--primary-color); margin-bottom: 15px;">
+  محصولات موجود
+</h3>
+
+<div class="product-grid" style="
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+">
+  <% if (products && products.length > 0) { %>
+    <% products.forEach(product => { %>
+      <div style="
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        transition: transform .3s;
+      " 
+      onmouseenter="this.style.transform='scale(1.03)'"
+      onmouseleave="this.style.transform='scale(1)'">
+
+        <img src="<%= product.image %>" alt="Product Image"
+          style="width:100%; height:170px; object-fit:cover; border-radius:8px; margin-bottom:15px;"
+        />
+
+        <h3 style="margin:0 0 10px; color:#333;"><%= product.title %></h3>
+
+        <p style="font-size:14px; color:#666; min-height:60px;">
+          <%= product.description.substring(0, 90) %>...
+        </p>
+
+        <p style="font-weight:bold; margin:10px 0; color: var(--primary-color);">
+          قیمت: <%= product.price.toLocaleString() %> تومان
+        </p>
+
+        <form action="/cart/add" method="POST">
+          <input type="hidden" name="productId" value="<%= product._id %>">
+
+          <button type="submit" style="
+            width:100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+          "
+          onmouseover="this.style.background='#7b1fa2'"
+          onmouseout="this.style.background='var(--primary-color)'"
+          >
+            🛒 افزودن به سبد خرید
+          </button>
+        </form>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p style="grid-column: 1 / -1; text-align: center; color: #999;">
+      محصولی برای نمایش موجود نیست.
+    </p>
+  <% } %>
+</div>

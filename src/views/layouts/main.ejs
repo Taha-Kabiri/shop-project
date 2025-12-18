@@ -2,13 +2,13 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title || "فروشگاه مدرن" %></title>
 
   <style>
-    /* 🎨  */
     :root {
       --primary-color: #6a1b9a; 
-      --accent-color: #ffb300; 
+      --accent-color: #ffb300;
       --background-light: #f3e5f5; 
       --text-dark: #212121;
       --error-bg: #ffebee;
@@ -26,75 +26,80 @@
       line-height: 1.6;
     }
 
-    /* 🧭 hedear/Navbar */
-    header {
+    nav {
       background: var(--primary-color);
-      padding: 15px 25px;
+      padding: 15px 40px;
       color: white;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-
-    header h2 {
-      margin: 0;
-      font-weight: 500;
+    
+    .content-wrapper {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 20px auto;
     }
 
-    nav a {
-      text-decoration: none;
-      color: var(--accent-color);
-      font-weight: bold;
-      margin-right: 15px;
-      transition: color var(--transition-speed);
-    }
-
-    nav a:hover {
-      color: #fff;
-    }
-
-    /* container orginal */
-    .container {
-      width: 90%;
-      max-width: 500px; 
-      margin: 40px auto;
-      background: var(--card-bg);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: box-shadow var(--transition-speed);
-    }
-
-    /* style forms  */
     .auth-form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 30px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
-
+    
     label {
-      font-weight: 600;
-      margin-top: 5px;
+      font-weight: bold;
       color: var(--primary-color);
     }
 
-    input {
-      padding: 12px 15px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      transition: all var(--transition-speed);
-      font-size: 16px;
-    }
-
-    input:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
-      outline: none;
-    }
-
-    button {
+    /* استایل‌های ورودی‌های عمومی و جدید اضافه شده */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"], /* اضافه شده برای قیمت و موجودی */
+    textarea { /* اضافه شده برای توضیحات */
       padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%; /* برای پر کردن عرض کادر */
+      box-sizing: border-box; /* برای جلوگیری از افزایش عرض با padding */
+    }
+    
+    textarea {
+        resize: vertical; /* اجازه تغییر اندازه عمودی به کاربر */
+        font-family: 'Tahoma', sans-serif;
+    }
+
+    input:focus, textarea:focus { /* اضافه شدن textarea به فوکوس */
+      border-color: var(--primary-color);
+    }
+    
+    /* کلاس جدید برای گروه‌بندی بهتر label و input در فرم محصول */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px; /* فاصله بین label و input */
+    }
+    
+    /* استایل ورودی آپلود فایل (اختیاری) */
+    input[type="file"] {
+        padding: 12px 0; /* حذف padding افقی اضافی */
+        border: none;
+        background: transparent;
+    }
+    
+    button {
+      padding: 12px 20px;
       background: var(--primary-color);
       color: var(--accent-color);
       border: none;
@@ -108,7 +113,7 @@
     }
 
     button:hover {
-      background: #7b1fa2; 
+      background: #7b1fa2;
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(106, 27, 154, 0.6);
     }
@@ -118,7 +123,6 @@
       box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
     }
 
-   /* message errores */
     .message.error {
       background: var(--error-bg);
       padding: 12px;
@@ -130,30 +134,62 @@
       animation: fadeIn 0.5s ease-out;
     }
 
-    /* message successfly */
     .message.success {
-      background: #e8f5e9; 
+      background: #e8f5e9;
       padding: 12px;
       margin-bottom: 15px;
       border-radius: 8px;
-      color: #2e7d32; 
+      color: #388e3c;
       font-size: 14px;
-      border-right: 4px solid #2e7d32;
+      border-right: 4px solid #388e3c;
       animation: fadeIn 0.5s ease-out;
     }
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+
+    /* Media Queries for responsiveness */
+    @media (max-width: 768px) {
+        
+        nav {
+            padding: 15px 15px !important;
+            flex-wrap: wrap;
+        }
+        
+        .content-wrapper {
+            padding: 10px;
+            margin: 10px auto;
+        }
+
+        .auth-form {
+            max-width: 95%;
+            padding: 20px;
+        }
+
+        .product-grid {
+            gap: 15px !important;
+        }
+    }
+    
+    @media (max-width: 500px) {
+        .nav-links-container {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px !important;
+        }
+        
+        h2 { font-size: 1.5em; }
+        p { font-size: 0.9em; }
+    }
   </style>
 </head>
 <body>
-
-  <%- include('../partials/navbar') %>
-
-  <div class="container">
-    <%- body %>
-  </div>
-
+   <%- include('../partials/navbar') %>
+    <div class="content-wrapper">
+        <%- body %>
+    </div>
 </body>
 </html>

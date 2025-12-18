@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
 const authController = require("../controller/authController");
-
+const authMiddleware = require("../../middleware/authMiddleware")
+const isLoggedOut = require('../../middleware/isLoggedOut');
 // Register Router
 router.post(
   "/register",
@@ -26,12 +27,15 @@ router.post(
 );
 
 // get peges
-router.get("/login", authController.showLogin);
-router.get("/register", authController.showRegister);
-router.get("/", authController.lobbyPage);
+router.get("/login",isLoggedOut ,authController.showLogin);
+router.get("/register",isLoggedOut, authController.showRegister);
+router.get("/",isLoggedOut, authController.lobbyPage);
 
 // post pages
 router.post("/login", authController.loginUser);
 router.post("/register", authController.registerUser);
+
+// logout
+router.get("/logout", authController.logout);
 
 module.exports = router;
