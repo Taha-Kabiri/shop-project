@@ -62,10 +62,10 @@
           قیمت: <%= product.price.toLocaleString() %> تومان
         </p>
 
-        <form action="/cart/add" method="POST">
+        <form action="/cart/add/<%= product._id %>" method="POST">
           <input type="hidden" name="productId" value="<%= product._id %>">
 
-          <button type="submit" style="
+          <button type="submit" style=" 
             width:100%;
             padding: 12px;
             background: var(--primary-color);

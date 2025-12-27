@@ -73,9 +73,8 @@ exports.login = async (req, res) => {
 
     req.session.user = {
       id: finduser._id,
-      name: finduser.name,
       role: finduser.role,
-      wallet: finduser.wallet || 0,
+      name: finduser.name,
     };
 
     const token = jwt.sign({ id: finduser._id }, JWT_SECRET, {

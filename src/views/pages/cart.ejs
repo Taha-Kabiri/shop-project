@@ -1,0 +1,57 @@
+<h2>سبد خرید</h2>
+
+<% if (cart.length === 0) { %>
+  <p>سبد خرید شما خالی است</p>
+<% } %>
+
+<% cart.forEach(item => { %>
+  <div style="display:flex;gap:15px;margin-bottom:15px;align-items:center;">
+    
+    <img src="<%= item.product.image %>" width="100" />
+
+    <div style="flex:1">
+      <h4><%= item.product.title %></h4>
+      <p>تعداد: <%= item.quantity %></p>
+      <p>
+        قیمت:
+        <%= (item.product.price * item.quantity).toLocaleString() %>
+        تومان
+      </p>
+    </div>
+
+    <!-- دکمه حذف -->
+    <form action="/cart/remove/<%= item.product._id %>" method="POST">
+      <button style="
+        background:#ff4d4d;
+        color:#fff;
+        border:none;
+        padding:6px 12px;
+        border-radius:6px;
+        cursor:pointer;
+      ">
+        حذف
+      </button>
+    </form>
+
+  </div>
+<% }) %>
+
+<hr>
+
+<h3>
+  جمع کل:
+  <%= totalPrice.toLocaleString() %> تومان
+</h3>
+
+<form action="/cart/pay" method="POST">
+  <button style="
+    background:#6a1b9a;
+    color:#fff;
+    border:none;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+  ">
+    پرداخت از کیف پول
+  </button>
+</form>

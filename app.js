@@ -47,8 +47,10 @@ app.get("/", (req, res) => {
 const userRouter = require("./src/router/user");
 const authRoutes = require("./src/router/authRoutes");
 const productRoutes = require("./src/router/products");
+const cartRoutes = require("./src/router/cart");
 // ...
 app.use("/users", userRouter);
 app.use("/api/auth", authRoutes);
 app.use("/products", productRoutes);
+app.use("/cart", cartRoutes);
 module.exports = app;
