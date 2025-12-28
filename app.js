@@ -48,9 +48,15 @@ const userRouter = require("./src/router/user");
 const authRoutes = require("./src/router/authRoutes");
 const productRoutes = require("./src/router/products");
 const cartRoutes = require("./src/router/cart");
+const paymentRoutes = require("./src/router/paymentRoutes");
+const walletRoutes = require("./src/router/walletRoutes");
 // ...
 app.use("/users", userRouter);
 app.use("/api/auth", authRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
+app.use("/payment", paymentRoutes);
+app.use("/wallet", walletRoutes);
 module.exports = app;
+
+

@@ -1,0 +1,18 @@
+<h2>کیف پول</h2>
+
+<p>
+  موجودی فعلی:
+  <strong>
+    <%= user.walletBalance.toLocaleString() %> تومان
+  </strong>
+</p>
+
+<form action="/payment/request" method="POST">
+  <input
+    type="number"
+    name="amount"
+    placeholder="مبلغ شارژ"
+    required
+  />
+  <button>شارژ کیف پول (زرین‌پال تستی)</button>
+</form>

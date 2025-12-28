@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require('../../models/user');
 const authController = require('../controller/authController');
 
-// تست ساخت یوزر
+// test create user
 router.post('/test-created', async (req, res) => {
     try {
         let newuser = await new User({
@@ -20,7 +20,7 @@ router.post('/test-created', async (req, res) => {
     }
 });
 
-// لابی
+// laby
 router.get('/lobby', authController.lobbyPage);
 
 module.exports = router;

@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const authMiddleware = require("../../middleware/authMiddleware");
 const fs = require("fs");
+// ------------------
+const authMiddleware = require("../../middleware/authMiddleware");
 // add productController
 const productController = require("../controller/productController");
 // add middleware "isAdmin" & "isLoggedin"
