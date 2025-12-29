@@ -25,8 +25,13 @@ app.use(flash());
 
 // middlware for flash messages
 app.use((req, res, next) => {
-  res.locals.errors = req.flash("errors") || [];
-  res.locals.successMessage = req.flash("success")[0] || null;
+  const errs = req.flash("errors");
+  res.locals.errors = Array.isArray(errs) ? errs : errs ? [errs] : [];
+
+  const success = req.flash("success");
+  res.locals.successMessage = success.length > 0 ? success[0] : null;
+
+  res.locals.user = req.session.user || null;
   next();
 });
 
@@ -50,6 +55,7 @@ const productRoutes = require("./src/router/products");
 const cartRoutes = require("./src/router/cart");
 const paymentRoutes = require("./src/router/paymentRoutes");
 const walletRoutes = require("./src/router/walletRoutes");
+const orderRoutes = require("./src/router/orderRoutes");
 // ...
 app.use("/users", userRouter);
 app.use("/api/auth", authRoutes);
@@ -57,6 +63,7 @@ app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/payment", paymentRoutes);
 app.use("/wallet", walletRoutes);
+app.use("/orders", orderRoutes);
 module.exports = app;
 
 

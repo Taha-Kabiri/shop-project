@@ -1,0 +1,33 @@
+<h2>سفارش‌های من</h2>
+
+<% if (orders.length === 0) { %>
+  <p>هنوز سفارشی ثبت نکرده‌اید</p>
+<% } %>
+
+<% orders.forEach(order => { %>
+  <div style="
+    border:1px solid #ddd;
+    padding:15px;
+    margin-bottom:20px;
+    border-radius:10px;
+  ">
+    <p>
+      <strong>تاریخ:</strong>
+      <%= new Date(order.createdAt).toLocaleDateString("fa-IR") %>
+    </p>
+
+    <ul>
+      <% order.items.forEach(item => { %>
+        <li>
+          <%= item.product.title %>
+          — تعداد: <%= item.quantity %>
+        </li>
+      <% }) %>
+    </ul>
+
+    <p>
+      <strong>مبلغ کل:</strong>
+      <%= order.totalPrice.toLocaleString() %> تومان
+    </p>
+  </div>
+<% }) %>

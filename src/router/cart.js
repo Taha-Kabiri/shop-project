@@ -9,7 +9,8 @@ router.get("/", isLoggedIn , cartController.showCart);
 // add to cart
 router.post("/add/:productId", isLoggedIn , cartController.addToCart);
 // remove product form cart
-router.post("/remove/:productId" , isLoggedIn , cartController.removeFormCart)
-
+router.post("/remove/:productId" , isLoggedIn , cartController.removeFormCart);
+// pay bay wallet
+router.post("/pay" , isLoggedIn , cartController.payWithWallet);
 module.exports = router;
 

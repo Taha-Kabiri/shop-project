@@ -18,12 +18,13 @@
       "
     >
       me kala
-   
- 
     </a>
   </div>
 
-  <div class="nav-links-container" style="display: flex; align-items: center; gap: 20px">
+  <div
+    class="nav-links-container"
+    style="display: flex; align-items: center; gap: 20px"
+  >
     <% if (!user) { %>
     <a href="/" style="color: var(--accent-color); text-decoration: none"
       >home</a
@@ -36,16 +37,13 @@
     <a
       href="/api/auth/register"
       style="color: var(--accent-color); text-decoration: none"
-      
-    
- >register</a
+      >register</a
     >
 
     <% } else { %>
 
     <div style="position: relative">
-      <span id="userMenuBtn" style="cursor: pointer;
- font-weight: bold">
+      <span id="userMenuBtn" style="cursor: pointer; font-weight: bold">
         <%= user.name %> ⬇
       </span>
 
@@ -53,13 +51,14 @@
         id="userMenuBox"
         style="
           position: absolute;
- left: 0; top: 30px;
+          left: 0;
+          top: 30px;
           background: white;
           color: #333;
           border-radius: 10px;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
           padding: 15px;
- display: none;
+          display: none;
           width: 160px;
         "
       >
@@ -67,7 +66,7 @@
           href="/wallet"
           style="
             display: block;
- margin-bottom: 10px;
+            margin-bottom: 10px;
             text-decoration: none;
             color: #333;
           "
@@ -76,10 +75,21 @@
         </a>
 
         <a
+          href="/orders"
+          style="
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+          "
+          >🧾 سفارش‌های من</a
+        >
+
+        <a
           href="/cart"
           style="
             display: block;
- margin-bottom: 10px;
+            margin-bottom: 10px;
             text-decoration: none;
             color: #333;
           "
@@ -89,8 +99,7 @@
 
         <a
           href="/api/auth/logout"
-          style="display: block;
- text-decoration: none; color: #e53935"
+          style="display: block; text-decoration: none; color: #e53935"
         >
           ⛔ خروج
         </a>
@@ -104,15 +113,14 @@
 <script>
   const menuBtn = document.getElementById("userMenuBtn");
   const menuBox = document.getElementById("userMenuBox");
-  
-  if(menuBtn){
-      menuBtn.addEventListener("click", () => {
-        if (menuBox.style.display === "block") {
-          menuBox.style.display = "none";
-     
-     } else {
-          menuBox.style.display = "block";
-        }
-      });
+
+  if (menuBtn) {
+    menuBtn.addEventListener("click", () => {
+      if (menuBox.style.display === "block") {
+        menuBox.style.display = "none";
+      } else {
+        menuBox.style.display = "block";
+      }
+    });
   }
 </script>
