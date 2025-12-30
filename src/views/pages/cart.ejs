@@ -1,57 +1,294 @@
-<h2>سبد خرید</h2>
+<div class="cart-wrapper">
+  <div class="cart-container">
+    <h2 class="cart-title">🛒 سبد خرید شما</h2>
 
-<% if (cart.length === 0) { %>
-  <p>سبد خرید شما خالی است</p>
-<% } %>
-
-<% cart.forEach(item => { %>
-  <div style="display:flex;gap:15px;margin-bottom:15px;align-items:center;">
-    
-    <img src="<%= item.product.image %>" width="100" />
-
-    <div style="flex:1">
-      <h4><%= item.product.title %></h4>
-      <p>تعداد: <%= item.quantity %></p>
-      <p>
-        قیمت:
-        <%= (item.product.price * item.quantity).toLocaleString() %>
-        تومان
-      </p>
+    <% if (cart.length === 0) { %>
+    <div class="empty-cart">
+      <div class="empty-icon">💨</div>
+      <p>سبد خرید شما در حال حاضر خالی است.</p>
+      <a href="/products/dashboard" class="go-back-btn">برگشت به فروشگاه</a>
     </div>
+    <% } else { %>
+    <div class="cart-grid">
+      <div class="cart-items">
+        <% cart.forEach(item => { %>
+        <div class="cart-item-card">
+          <div class="item-img">
+            <img
+              src="<%= item.product.image || item.product.imageUrl %>"
+              alt="<%= item.product.title %>"
+            />
+          </div>
 
-    <!-- دکمه حذف -->
-    <form action="/cart/remove/<%= item.product._id %>" method="POST">
-      <button style="
-        background:#ff4d4d;
-        color:#fff;
-        border:none;
-        padding:6px 12px;
-        border-radius:6px;
-        cursor:pointer;
-      ">
-        حذف
-      </button>
-    </form>
+          <div class="item-info">
+            <h4><%= item.product.title %></h4>
+            <div class="item-details">
+              <span>تعداد: <strong><%= item.quantity %></strong></span>
+              <span class="item-price"
+                ><%= (item.product.price * item.quantity).toLocaleString() %>
+                تومان</span
+              >
+            </div>
+          </div>
 
+          <form
+            action="/cart/remove/<%= item.product._id %>"
+            method="POST"
+            class="remove-form"
+          >
+            <button type="submit" class="remove-btn" title="حذف از سبد">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                ></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </button>
+          </form>
+        </div>
+        <% }) %>
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-card">
+          <h3>خلاصه سفارش</h3>
+          <div class="summary-line">
+            <span>تعداد کل کالاها:</span>
+            <span
+              ><%= cart.reduce((acc, item) => acc + item.quantity, 0) %></span
+            >
+          </div>
+          <hr class="summary-divider" />
+          <div class="summary-total">
+            <span>جمع کل خرید:</span>
+            <span class="total-amount"
+              ><%= totalPrice.toLocaleString() %> تومان</span
+            >
+          </div>
+
+          <form action="/cart/pay" method="POST">
+            <button type="submit" class="checkout-btn">
+              تأیید و پرداخت نهایی
+            </button>
+          </form>
+
+          <p class="secure-note">🔒 پرداخت از طریق درگاه امن بانکی</p>
+        </div>
+      </div>
+    </div>
+    <% } %>
   </div>
-<% }) %>
+</div>
 
-<hr>
+<style>
+  .cart-wrapper {
+    background-color: #f9f7f2;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: "Tahoma", sans-serif;
+    direction: rtl;
+  }
 
-<h3>
-  جمع کل:
-  <%= totalPrice.toLocaleString() %> تومان
-</h3>
+  .cart-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 
-<form action="/cart/pay" method="POST">
-  <button style="
-    background:#2e7d32;
-    color:#fff;
-    padding:10px 20px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-  ">
-    پرداخت از کیف پول
-  </button>
-</form>
+  .cart-title {
+    color: #2d2424;
+    margin-bottom: 30px;
+    font-weight: 800;
+  }
+
+  .cart-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+    align-items: start;
+  }
+
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .cart-item-card {
+    background: #fff;
+    border: 1px solid #d7c0ae;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: 0.3s;
+  }
+
+  .cart-item-card:hover {
+    box-shadow: 0 10px 20px rgba(150, 126, 118, 0.1);
+  }
+
+  .item-img img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 15px;
+    background: #f8f8f8;
+  }
+
+  .item-info {
+    flex-grow: 1;
+  }
+
+  .item-info h4 {
+    color: #2d2424;
+    margin: 0 0 10px 0;
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #967e76;
+    font-size: 0.9rem;
+  }
+
+  .item-price {
+    font-weight: bold;
+    color: #2d2424;
+    font-size: 1.1rem;
+  }
+
+  .remove-btn {
+    background: #fff;
+    color: #967e76;
+    border: 1px solid #eee3cb;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .remove-btn:hover {
+    background: #ffebee;
+    color: #c62828;
+    border-color: #ffcdd2;
+  }
+
+  .summary-card {
+    background: #fff;
+    border: 1px solid #d7c0ae;
+    border-radius: 25px;
+    padding: 25px;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 15px 35px rgba(150, 126, 118, 0.1);
+  }
+
+  .summary-card h3 {
+    margin-bottom: 20px;
+    color: #2d2424;
+  }
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: #967e76;
+  }
+
+  .summary-divider {
+    border: none;
+    border-top: 1px solid #eee3cb;
+    margin: 15px 0;
+  }
+
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #2d2424;
+    margin-bottom: 25px;
+  }
+
+  .total-amount {
+    color: #967e76;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    padding: 16px;
+    background-color: #967e76;
+    color: #eee3cb;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .checkout-btn:hover {
+    background-color: #2d2424;
+    color: #fff;
+    transform: translateY(-3px);
+  }
+
+  .secure-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #d7c0ae;
+    margin-top: 15px;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 60px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px dashed #d7c0ae;
+  }
+
+  .empty-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+
+  .go-back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: #d7c0ae;
+    color: #2d2424;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .go-back-btn:hover {
+    background: #967e76;
+    color: #fff;
+  }
+
+  @media (max-width: 850px) {
+    .cart-grid {
+      grid-template-columns: 1fr;
+    }
+    .cart-summary {
+      position: static;
+    }
+  }
+</style>

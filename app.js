@@ -25,13 +25,19 @@ app.use(flash());
 
 // middlware for flash messages
 app.use((req, res, next) => {
-  const errs = req.flash("errors");
-  res.locals.errors = Array.isArray(errs) ? errs : errs ? [errs] : [];
+
+  const rawErrors = req.flash("errors"); 
+  
+  res.locals.errors = rawErrors.flatMap(err => {
+    if (typeof err === 'object' && err.msg) return err.msg;
+    if (Array.isArray(err)) return err.map(e => e.msg || e);
+    return err;
+  });
 
   const success = req.flash("success");
   res.locals.successMessage = success.length > 0 ? success[0] : null;
-
-  res.locals.user = req.session.user || null;
+  res.locals.user = req.session.user || null; 
+  
   next();
 });
 

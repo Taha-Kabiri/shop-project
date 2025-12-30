@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/user.js");
+const Product = require("./../../models/product.js");
 
 JWT_SECRET = process.env.JWT_SECRET || "change_this_secret";
 
@@ -111,10 +112,24 @@ exports.registerUser = (req, res) => {
   res.send("REGISTER HANDLER");
 };
 // lobby page -----------------------------------------------------------------------------------
-exports.lobbyPage = (req, res) => {
-  res.render("pages/lobby", {
-    title: "خانه",
-  });
+exports.lobbyPage = async (req, res) => {
+  try {
+    // گرفتن محصولات از دیتابیس
+    const products = await Product.find(); 
+    
+    res.render("pages/lobby", {
+      title: "خانه",
+      products: products, // حالا متغیر برای فایل EJS تعریف شده است
+      user: req.session.user
+    });
+  } catch (err) {
+    console.error(err);
+    res.render("pages/lobby", { 
+      title: "خانه", 
+      products: [], // در صورت خطا آرایه خالی بفرستید تا سایت کرش نکند
+      user: req.session.user 
+    });
+  }
 };
 
 // logout

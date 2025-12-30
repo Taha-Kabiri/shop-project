@@ -1,126 +1,135 @@
-<nav
-  style="
-    background: var(--primary-color);
+<nav style="
+    background: var(--primary-color) !important;
     padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--accent-color);
-  "
->
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  ">
+  
   <div>
-    <a
-      href="/"
-      style="
+    <a href="/" style="
         color: var(--accent-color);
         text-decoration: none;
         font-weight: bold;
-      "
-    >
-      me kala
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+      ">
+      ME KALA
     </a>
   </div>
 
-  <div
-    class="nav-links-container"
-    style="display: flex; align-items: center; gap: 20px"
-  >
+  <div class="nav-links-container" style="display: flex; align-items: center; gap: 25px">
     <% if (!user) { %>
-    <a href="/" style="color: var(--accent-color); text-decoration: none"
-      >home</a
-    >
-    <a
-      href="/api/auth/login"
-      style="color: var(--accent-color); text-decoration: none"
-      >login</a
-    >
-    <a
-      href="/api/auth/register"
-      style="color: var(--accent-color); text-decoration: none"
-      >register</a
-    >
+      <a href="/" style="color: var(--accent-color); text-decoration: none; font-size: 0.9rem;">صفحه اصلی</a>
+      <a href="/api/auth/login" style="color: var(--accent-color); text-decoration: none; font-size: 0.9rem;">ورود</a>
+      <a href="/api/auth/register" style="
+          background: var(--secondary-color);
+          color: #fff;
+          padding: 8px 18px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-size: 0.9rem;
+        ">ثبت‌نام</a>
 
     <% } else { %>
+      <div style="position: relative;">
+        <div id="userMenuBtn" style="
+            cursor: pointer; 
+            color: var(--accent-color); 
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            user-select: none;
+          ">
+          <span><%= user.name %></span>
+          <span style="font-size: 1.2rem;">⋮</span>
+        </div>
 
-    <div style="position: relative">
-      <span id="userMenuBtn" style="cursor: pointer; font-weight: bold">
-        <%= user.name %> ⬇
-      </span>
-
-      <div
-        id="userMenuBox"
-        style="
-          position: absolute;
-          left: 0;
-          top: 30px;
-          background: white;
-          color: #333;
-          border-radius: 10px;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-          padding: 15px;
-          display: none;
-          width: 160px;
-        "
-      >
-        <a
-          href="/wallet"
-          style="
-            display: block;
-            margin-bottom: 10px;
-            text-decoration: none;
-            color: #333;
-          "
-        >
-          💰 کیف پول
-        </a>
-
-        <a
-          href="/orders"
-          style="
-            display: block;
-            margin-bottom: 10px;
-            text-decoration: none;
-            color: #333;
-          "
-          >🧾 سفارش‌های من</a
-        >
-
-        <a
-          href="/cart"
-          style="
-            display: block;
-            margin-bottom: 10px;
-            text-decoration: none;
-            color: #333;
-          "
-        >
-          🛒 سبد خرید
-        </a>
-
-        <a
-          href="/api/auth/logout"
-          style="display: block; text-decoration: none; color: #e53935"
-        >
-          ⛔ خروج
-        </a>
+        <div id="userDropdown" style="
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 0;
+            background-color: #ffffff;
+            border: 1px solid #D7C0AE;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(45, 36, 36, 0.15);
+            padding: 10px;
+            display: none;
+            width: 190px;
+            z-index: 1100;
+          ">
+          
+          <a href="/wallet" class="nav-dropdown-item">💰 کیف پول</a>
+          <a href="/orders" class="nav-dropdown-item">🧾 سفارش‌های من</a>
+          <a href="/cart" class="nav-dropdown-item">🛒 سبد خرید</a>
+          
+          <div style="border-top: 1px solid #EEE3CB; margin: 8px 0;"></div>
+          
+          <a href="/api/auth/logout" class="nav-dropdown-item logout-link">⛔ خروج از حساب</a>
+        </div>
       </div>
-    </div>
-
     <% } %>
   </div>
 </nav>
 
+<style>
+  
+  .nav-dropdown-item {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 2px;
+    text-decoration: none;
+    color: #2D2424 !important;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-align: right;
+  }
+
+  
+  .nav-dropdown-item:hover {
+    background-color: #F9F7F2; 
+    color: #967E76 !important; 
+    padding-right: 20px;
+  }
+
+  
+  .logout-link:hover {
+    background-color: #fff1f0 !important;
+    color: #c62828 !important;
+  }
+
+  
+  #userDropdown {
+    transform-origin: top left;
+    animation: dropdownFade 0.2s ease-out;
+  }
+
+  @keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
 <script>
-  const menuBtn = document.getElementById("userMenuBtn");
-  const menuBox = document.getElementById("userMenuBox");
+
+  const menuBtn = document.getElementById('userMenuBtn');
+  const dropdown = document.getElementById('userDropdown');
 
   if (menuBtn) {
-    menuBtn.addEventListener("click", () => {
-      if (menuBox.style.display === "block") {
-        menuBox.style.display = "none";
-      } else {
-        menuBox.style.display = "block";
-      }
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    
+    document.addEventListener('click', () => {
+      dropdown.style.display = 'none';
     });
   }
 </script>

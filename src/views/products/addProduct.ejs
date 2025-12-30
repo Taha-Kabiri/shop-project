@@ -1,40 +1,188 @@
-<h2 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">
-  افزودن محصول جدید
-</h2>
+<div class="add-product-wrapper">
+  <a href="/products/dashboard" class="back-link">
+    <span class="icon">⬅</span> بازگشت به داشبورد
+  </a>
 
-<form 
-  action="/products/add" 
-  method="POST" 
-  class="auth-form" 
-  style="max-width: 500px;"
-  enctype="multipart/form-data" 
->
-  <div>
-    <label for="title">نام محصول</label>
-    <input id="title" name="title" type="text" required />
+  <div class="form-container animate-fade-in">
+    <div class="form-header">
+      <div class="header-icon">📦</div>
+      <h2>افزودن محصول جدید</h2>
+      <p>اطلاعات محصول را با دقت وارد نمایید</p>
+    </div>
+
+    <form 
+      action="/products/add" 
+      method="POST" 
+      class="luxury-form" 
+      enctype="multipart/form-data" 
+    >
+      <div class="input-row">
+        <div class="input-group">
+          <label for="title">نام محصول</label>
+          <input id="title" name="title" type="text" placeholder="مثلاً: ساعت مچی کلاسیک" required />
+        </div>
+      </div>
+
+      <div class="input-row split">
+        <div class="input-group">
+          <label for="price">قیمت (تومان)</label>
+          <input id="price" name="price" type="number" placeholder="0" required />
+        </div>
+        <div class="input-group">
+          <label for="stock">موجودی در انبار</label>
+          <input id="stock" name="stock" type="number" placeholder="0" required />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="image" class="file-label">
+          <span class="upload-icon">📸</span>
+          <span id="file-name">انتخاب تصویر محصول</span>
+          <input id="image" name="image" type="file" accept="image/*" required onchange="updateFileName(this)" />
+        </label>
+      </div>
+
+      <div class="input-group">
+        <label for="description">توضیحات محصول</label>
+        <textarea id="description" name="description" rows="4" placeholder="ویژگی‌ها و جزئیات محصول را اینجا بنویسید..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-premium-btn">
+        <span class="btn-text">ثبت و انتشار محصول</span>
+        <span class="btn-glow"></span>
+      </button>
+    </form>
   </div>
+</div>
+
+<style>
+  :root {
+    --primary-dark: #2d2424;
+    --accent-brown: #967e76;
+    --beige-light: #d7c0ae;
+    --cream-bg: #f9f7f2;
+    --white: #ffffff;
+  }
+
+  .add-product-wrapper {
+    background: linear-gradient(135deg, var(--cream-bg) 0%, var(--beige-light) 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: "Tahoma", sans-serif;
+    direction: rtl;
+  }
+
+  .back-link {
+    align-self: flex-start;
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    margin-right: calc(50% - 250px);
+  }
+  .back-link:hover { color: var(--accent-brown); transform: translateX(-5px); }
+
+  .form-container {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 40px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 25px 50px rgba(45, 36, 36, 0.1);
+  }
+
+  .form-header { text-align: center; margin-bottom: 35px; }
+  .header-icon { font-size: 3rem; margin-bottom: 10px; }
+  .form-header h2 { color: var(--primary-dark); margin: 0; font-size: 1.6rem; }
+  .form-header p { color: var(--accent-brown); font-size: 0.85rem; margin-top: 5px; }
+
+  .input-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+  label { margin-bottom: 8px; font-weight: bold; color: var(--primary-dark); font-size: 0.9rem; }
+
+  input, textarea {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(150, 126, 118, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    outline: none;
+    transition: 0.3s;
+    font-family: inherit;
+  }
+
+  input:focus, textarea:focus {
+    border-color: var(--accent-brown);
+    box-shadow: 0 0 0 4px rgba(150, 126, 118, 0.1);
+  }
+
   
-  <div>
-    <label for="price">قیمت (تومان)</label>
-    <input id="price" name="price" type="number" required />
-  </div>
+  .file-label {
+    background: var(--cream-bg);
+    border: 2px dashed var(--beige-light);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .file-label:hover { background: var(--white); border-color: var(--accent-brown); }
+  .file-label input { display: none; }
+  .upload-icon { display: block; font-size: 1.5rem; margin-bottom: 5px; }
 
-  <div>
-    <label for="stock">موجودی</label>
-    <input id="stock" name="stock" type="number" required />
-  </div>
+  
+  .submit-premium-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 10px;
+    background: var(--primary-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s;
+  }
 
-  <div>
-    <label for="image">تصویر محصول</label>
-    <input id="image" name="image" type="file" accept="image/*" required />
-  </div>
+  .submit-premium-btn:hover {
+    background: var(--accent-brown);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(150, 126, 118, 0.3);
+  }
 
-  <div>
-    <label for="description">توضیحات</label>
-    <textarea id="description" name="description" rows="4" required></textarea>
-  </div>
+  
+  .animate-fade-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
 
-  <button type="submit" style="margin-top: 15px;">
-    ثبت محصول
-  </button>
-</form>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .split { grid-template-columns: 1fr; }
+    .form-container { padding: 25px; }
+    .back-link { margin-right: 20px; }
+  }
+</style>
+
+<script>
+ 
+  function updateFileName(input) {
+    const fileName = input.files[0] ? input.files[0].name : "انتخاب تصویر محصول";
+    document.getElementById('file-name').innerText = fileName;
+    document.getElementById('file-name').style.color = "#967e76";
+  }
+</script>

@@ -1,93 +1,231 @@
 
-<h2 style="color: var(--primary-color); margin-bottom: 20px;">
-  خوش اومدی <%= user?.name || "کاربر عزیز" %> ✨
-</h2>
+<div class="dashboard-wrapper">
+  <div class="header-section">
+    <div class="welcome-box">
+      <h2 class="welcome-title">خوش اومدی، <%= user?.name || "کاربر عزیز" %> ✨</h2>
+      <p class="welcome-subtitle">در ME KALA، بهترین‌ها منتظر شماست.</p>
+    </div>
 
-<% if (user && user.role === 'admin') { %>
-  <div style="margin-bottom: 25px; text-align: right;">
-    <a href="/products/add" style="
-      background: var(--primary-color);
-      color: var(--accent-color);
-      padding: 12px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    ">
-      ➕ افزودن محصول جدید
-    </a>
-  </div>
-<% } %>
-
-<p style="margin-bottom: 25px; color: #444;">
-  اینجا داشبورد اختصاصی توئه — می‌تونی محصولات رو ببینی و به سبد خریدت اضافه کنی.
-</p>
-
-
-<hr style="margin: 25px 0; border: none; border-top: 2px solid #ddd;">
-
-
-<h3 style="color: var(--primary-color); margin-bottom: 15px;">
-  محصولات موجود
-</h3>
-
-<div class="product-grid" style="
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-">
-  <% if (products && products.length > 0) { %>
-    <% products.forEach(product => { %>
-      <div style="
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        transition: transform .3s;
-      " 
-      onmouseenter="this.style.transform='scale(1.03)'"
-      onmouseleave="this.style.transform='scale(1)'">
-
-        <img src="<%= product.image %>" alt="Product Image"
-          style="width:100%; height:170px; object-fit:cover; border-radius:8px; margin-bottom:15px;"
-        />
-
-        <h3 style="margin:0 0 10px; color:#333;"><%= product.title %></h3>
-
-        <p style="font-size:14px; color:#666; min-height:60px;">
-          <%= product.description.substring(0, 90) %>...
-        </p>
-
-        <p style="font-weight:bold; margin:10px 0; color: var(--primary-color);">
-          قیمت: <%= product.price.toLocaleString() %> تومان
-        </p>
-
-        <form action="/cart/add/<%= product._id %>" method="POST">
-          <input type="hidden" name="productId" value="<%= product._id %>">
-
-          <button type="submit" style=" 
-            width:100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: var(--accent-color);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.3s;
-          "
-          onmouseover="this.style.background='#7b1fa2'"
-          onmouseout="this.style.background='var(--primary-color)'"
-          >
-            🛒 افزودن به سبد خرید
-          </button>
-        </form>
+    <% if (user && user.role === 'admin') { %>
+      <div class="admin-zone">
+        <a href="/products/add" class="admin-btn-luxury">
+          <span>➕ افزودن محصول جدید</span>
+        </a>
       </div>
-    <% }) %>
-  <% } else { %>
-    <p style="grid-column: 1 / -1; text-align: center; color: #999;">
-      محصولی برای نمایش موجود نیست.
-    </p>
+    <% } %>
+  </div>
+
+  <% if (user && user.role !== 'admin') { %>
+    <div class="card p-3 mt-3">
+      <h4>ارتقای حساب به ادمین (۵۰,۰۰۰ تومان)</h4>
+      <p>موجودی فعلی شما: <%= user.walletBalance?.toLocaleString() %> ریال</p>
+      
+      <form action="/wallet/upgrade-with-wallet" method="POST">
+        <button type="submit" class="btn btn-success" 
+          <%= (user.walletBalance < 500000) ? 'disabled' : '' %>>
+          ارتقا با موجودی کیف پول
+        </button>
+      </form>
+      
+      <% if (user.walletBalance < 500000) { %>
+        <small class="text-danger">موجودی کافی نیست (حداقل ۵۰۰,۰۰۰ ریال نیاز است).</small>
+      <% } %>
+    </div>
   <% } %>
+
+  <div class="content-divider">
+    <span>💎 ویترین محصولات 💎</span>
+  </div>
+
+  <div class="product-grid">
+    <% if (products && products.length > 0) { %>
+      <% products.forEach(product => { %>
+        <div class="product-card">
+          <div class="img-container">
+            <img src="<%= product.image || product.imageUrl %>" alt="<%= product.title %>" class="product-img-main">
+            <div class="img-badge">ویژه</div>
+          </div>
+
+          <div class="card-body">
+            <h3><%= product.title %></h3>
+            <p class="description">
+              <%= product.description ? product.description.substring(0, 80) + '...' : 'توضیحات محصول برای بررسی بیشتر شما...' %>
+            </p>
+
+            <div class="price-row">
+              <span class="price-tag"><%= product.price.toLocaleString() %></span>
+              <span class="currency">تومان</span>
+            </div>
+
+            <form action="/cart/add/<%= product._id %>" method="POST" class="add-to-cart-form">
+              <input type="hidden" name="productId" value="<%= product._id %>">
+              <button type="button" class="buy-btn-premium" onclick="addToCartEffect(this, '<%= product.image || product.imageUrl %>')">
+                <span class="btn-text">افزودن به سبد خرید</span>
+                <span class="btn-icon">🛒</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="empty-state">هنوز محصولی در ویترین قرار نگرفته است.</div>
+    <% } %>
+  </div>
+
+  <footer class="premium-footer">
+    <div class="footer-content">
+      <div class="footer-logo">ME KALA</div>
+      <p>تجربه‌ای متفاوت از خرید آنلاین با استایل خاص شما</p>
+      <div class="footer-links">
+        <span>ضمانت اصالت کالا</span>
+        <span class="dot">•</span>
+        <span>پشتیبانی ۲۴ ساعته</span>
+        <span class="dot">•</span>
+        <span>پرداخت امن</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; ۲۰۲۵ تمامی حقوق برای ME KALA محفوظ است
+    </div>
+  </footer>
 </div>
+
+<style>
+  :root {
+    --primary-dark: #2D2424;
+    --accent-brown: #967E76;
+    --beige-light: #D7C0AE;
+    --cream-bg: #F9F7F2;
+    --white-soft: #FFFFFF;
+  }
+
+  .dashboard-wrapper {
+    background-color: var(--cream-bg);
+    min-height: 100vh;
+    padding: 0;
+    font-family: 'Tahoma', sans-serif;
+    direction: rtl;
+  }
+
+  .header-section {
+    padding: 50px 40px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .welcome-title { color: var(--primary-dark); font-size: 1.8rem; font-weight: 800; margin: 0; }
+  .welcome-subtitle { color: var(--accent-brown); margin-top: 10px; font-size: 1rem; }
+
+  .admin-btn-luxury {
+    background: var(--accent-brown);
+    color: #fff;
+    padding: 12px 25px; border-radius: 15px;
+    text-decoration: none; font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(150, 126, 118, 0.3);
+  }
+  .admin-btn-luxury:hover { background: var(--primary-dark); transform: translateY(-3px); }
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--beige-light);
+    margin: 0 40px;
+  }
+
+  .content-divider { text-align: center; margin: 40px 0; color: var(--beige-light); font-weight: bold; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 35px; padding: 0 40px 60px;
+  }
+
+  .product-card {
+    background: var(--white-soft); border: 1px solid var(--beige-light);
+    border-radius: 25px; overflow: hidden; transition: 0.4s;
+    position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  }
+  .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(150, 126, 118, 0.15); }
+
+  .img-container { height: 230px; position: relative; }
+  .product-img-main { width: 100%; height: 100%; object-fit: cover; }
+  .img-badge {
+    position: absolute;
+    top: 15px; left: 15px;
+    background: rgba(255,255,255,0.9); color: var(--primary-dark);
+    padding: 5px 12px; border-radius: 10px; font-size: 0.7rem; font-weight: bold;
+  }
+
+  .card-body { padding: 25px; }
+  .card-body h3 { color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 12px; }
+  .description { font-size: 0.85rem; color: #777; line-height: 1.6; margin-bottom: 20px; }
+
+  .price-row { margin-bottom: 20px; display: flex; align-items: baseline; gap: 5px; }
+  .price-tag { font-size: 1.6rem; font-weight: 900; color: var(--accent-brown); }
+  .currency { font-size: 0.8rem; color: #999; }
+
+  .buy-btn-premium {
+    width: 100%; padding: 15px;
+    background: var(--accent-brown);
+    color: #fff; border: none; border-radius: 18px;
+    font-weight: bold; cursor: pointer; transition: 0.3s;
+    display: flex; justify-content: center; align-items: center;
+    gap: 10px;
+  }
+  .buy-btn-premium:hover { background: var(--primary-dark); }
+
+  .premium-footer {
+    background-color: var(--primary-dark);
+    color: var(--beige-light);
+    padding: 60px 40px 30px;
+    text-align: center;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+  }
+  .footer-logo { font-size: 1.8rem; font-weight: 900; color: var(--white-soft); margin-bottom: 15px; }
+  .footer-links { margin: 25px 0; font-size: 0.9rem; color: var(--accent-brown); }
+  .dot { margin: 0 10px; }
+  .footer-bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(150, 126, 118, 0.2); font-size: 0.8rem; }
+
+  .flying-item {
+    position: fixed;
+    z-index: 9999;
+    width: 60px; height: 60px; border-radius: 50%;
+    object-fit: cover; pointer-events: none;
+    transition: all 0.8s cubic-bezier(0.1, 0.5, 0.3, 1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #fff;
+  }
+</style>
+
+<script>
+function addToCartEffect(btn, imgUrl) {
+    const originalText = btn.querySelector('.btn-text').innerHTML;
+    btn.classList.add('btn-active-shake');
+    btn.querySelector('.btn-text').innerText = '✅ اضافه شد';
+    
+    const img = document.createElement('img');
+    img.src = imgUrl;
+    img.classList.add('flying-item');
+    
+    const rect = btn.getBoundingClientRect();
+    img.style.left = rect.left + (rect.width / 2) - 30 + 'px';
+    img.style.top = rect.top + 'px';
+    document.body.appendChild(img);
+
+    setTimeout(() => {
+        img.style.left = '50px'; 
+        img.style.top = '20px';
+        img.style.transform = 'scale(0) rotate(720deg)';
+        img.style.opacity = '0';
+    }, 50);
+
+    setTimeout(() => {
+        img.remove();
+        btn.classList.remove('btn-active-shake');
+        btn.querySelector('.btn-text').innerHTML = originalText;
+        btn.closest('form').submit();
+    }, 850);
+}
+</script>

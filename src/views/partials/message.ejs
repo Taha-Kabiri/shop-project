@@ -1,13 +1,42 @@
-<% if (errors && errors.length > 0) { %>
-  <% errors.forEach(err => { %>
-    <div class="message error">
-        <%= (typeof err === 'object' && err.msg) ? err.msg : err %>
-    </div>
-  <% }) %>
-<% } %>
+<div id="flash-messages" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1100; width: 90%; max-width: 400px;">
+    <% if (errors && errors.length > 0) { %>
+      <% errors.forEach(err => { %>
+        <div class="alert-box error-msg">
+            <%= (typeof err === 'object') ? err.msg : err %>
+        </div>
+      <% }) %>
+    <% } %>
+    
+    <% if (successMessage) { %>
+        <div class="alert-box success-msg">
+            <%= (typeof successMessage === 'object') ? successMessage.msg : successMessage %>
+        </div>
+    <% } %>
+</div>
 
-<% if (successMessage) { %>
-    <div class="message success">
-        <%= (typeof successMessage === 'object' && successMessage.msg) ? successMessage.msg : successMessage %>
-    </div>
-<% } %>
+<style>
+    .alert-box {
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: center;
+        font-weight: bold;
+        animation: slideDown 0.5s ease-out;
+        transition: opacity 0.5s ease;
+    }
+    .error-msg {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+    .success-msg {
+        background-color: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

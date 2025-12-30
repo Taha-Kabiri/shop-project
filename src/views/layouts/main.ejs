@@ -1,195 +1,96 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title><%= locals.title || "فروشگاه من" %></title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= locals.title || "T-KALA" %></title>
 
-  <style>
-    :root {
-      --primary-color: #6a1b9a; 
-      --accent-color: #ffb300;
-      --background-light: #f3e5f5; 
-      --text-dark: #212121;
-      --error-bg: #ffebee;
-      --error-text: #c62828;
-      --card-bg: #ffffff;
-      --transition-speed: 0.3s;
-    }
+    <style>
+      :root {
+        --primary-color: #2d2424;
+        --secondary-color: #967e76;
+        --accent-color: #eee3cb;
+        --card-bg: #d7c0ae;
+        --background-light: #b7c4cf;
+        --text-dark: #2d2424;
+      }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Tahoma', sans-serif;
-      background: var(--background-light);
-      color: var(--text-dark);
-      line-height: 1.6;
-    }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: "Tahoma", sans-serif;
+        box-sizing: border-box;
+      }
 
-    nav {
-      background: var(--primary-color);
-      padding: 15px 40px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .content-wrapper {
-      padding: 20px;
-      max-width: 1200px;
-      margin: 20px auto;
-    }
+      body {
+        background-color: var(--background-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
 
-    .auth-form {
-      max-width: 400px;
-      margin: 20px auto;
-      padding: 30px;
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    label {
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-
-    /* استایل‌های ورودی‌های عمومی و جدید اضافه شده */
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"], /* اضافه شده برای قیمت و موجودی */
-    textarea { /* اضافه شده برای توضیحات */
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      outline: none;
-      transition: border-color 0.3s;
-      width: 100%; /* برای پر کردن عرض کادر */
-      box-sizing: border-box; /* برای جلوگیری از افزایش عرض با padding */
-    }
-    
-    textarea {
-        resize: vertical; /* اجازه تغییر اندازه عمودی به کاربر */
-        font-family: 'Tahoma', sans-serif;
-    }
-
-    input:focus, textarea:focus { /* اضافه شدن textarea به فوکوس */
-      border-color: var(--primary-color);
-    }
-    
-    /* کلاس جدید برای گروه‌بندی بهتر label و input در فرم محصول */
-    .form-group {
+      nav {
+        background: var(--primary-color) !important;
+        padding: 15px 40px;
         display: flex;
-        flex-direction: column;
-        gap: 5px; /* فاصله بین label و input */
-    }
-    
-    /* استایل ورودی آپلود فایل (اختیاری) */
-    input[type="file"] {
-        padding: 12px 0; /* حذف padding افقی اضافی */
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      nav a {
+        color: var(--accent-color) !important;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      nav a:hover {
+        color: #fff !important;
+        text-shadow: 0 0 5px rgba(238, 227, 203, 0.5);
+      }
+
+      main {
+        width: 100%;
+        min-height: calc(100vh - 70px);
+      }
+
+      .btn-primary {
+        background: var(--secondary-color);
+        color: #fff;
         border: none;
-        background: transparent;
-    }
-    
-    button {
-      padding: 12px 20px;
-      background: var(--primary-color);
-      color: var(--accent-color);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-      transition: background var(--transition-speed), transform 0.1s;
-      margin-top: 10px;
-      box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
-    }
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+ <body>
+    <%- include('../partials/navbar') %>
 
-    button:hover {
-      background: #7b1fa2;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(106, 27, 154, 0.6);
-    }
+    <main>
+        <%- include('../partials/message') %> 
 
-    button:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
-    }
-
-    .message.error {
-      background: var(--error-bg);
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      color: var(--error-text);
-      font-size: 14px;
-      border-right: 4px solid var(--error-text);
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    .message.success {
-      background: #e8f5e9;
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      color: #388e3c;
-      font-size: 14px;
-      border-right: 4px solid #388e3c;
-      animation: fadeIn 0.5s ease-out;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-
-    /* Media Queries for responsiveness */
-    @media (max-width: 768px) {
-        
-        nav {
-            padding: 15px 15px !important;
-            flex-wrap: wrap;
+        <%- body %>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const messageContainer = document.getElementById('flash-messages');
+        if (messageContainer) {
+            setTimeout(() => {
+                // ایجاد افکت محو شدن (Fade out)
+                messageContainer.style.opacity = '0';
+                setTimeout(() => {
+                    messageContainer.remove();
+                }, 500); // حذف کامل از صفحه بعد از اتمام انیمیشن محو شدن
+            }, 3000); // ۳ ثانیه توقف
         }
-        
-        .content-wrapper {
-            padding: 10px;
-            margin: 10px auto;
-        }
-
-        .auth-form {
-            max-width: 95%;
-            padding: 20px;
-        }
-
-        .product-grid {
-            gap: 15px !important;
-        }
-    }
-    
-    @media (max-width: 500px) {
-        .nav-links-container {
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px !important;
-        }
-        
-        h2 { font-size: 1.5em; }
-        p { font-size: 0.9em; }
-    }
-  </style>
-</head>
-<body>
-    <%- include('../partials/navbar') %> <div class="container" style="margin-top: 20px;">
-        <%- include('../partials/message') %> </div>
-
-    <%- body %>
+    });
+</script>
 </body>
+</html>
 </html>

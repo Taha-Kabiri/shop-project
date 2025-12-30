@@ -1,33 +1,201 @@
-<h2>سفارش‌های من</h2>
+<div class="orders-wrapper">
+  <div class="orders-container">
+    <div class="orders-header">
+      <div class="header-content">
+        <h2>🧾 تاریخچه سفارشات</h2>
+        <p>لیست تمامی خریدها و جزئیات سفارش‌های شما در یک نگاه</p>
+      </div>
+      <div class="header-icon">📦</div>
+    </div>
 
-<% if (orders.length === 0) { %>
-  <p>هنوز سفارشی ثبت نکرده‌اید</p>
-<% } %>
+    <% if (orders.length === 0) { %>
+      <div class="empty-state animate-in">
+        <div class="empty-img">🔍</div>
+        <p>هنوز هیچ سفارشی ثبت نکرده‌اید.</p>
+        <a href="/dashboard" class="browse-btn">مشاهده محصولات</a>
+      </div>
+    <% } else { %>
+      <div class="orders-list">
+        <% orders.forEach((order, index) => { %>
+          <div class="order-card animate-up" style="animation-delay: <%= index * 0.1 %>s">
+            <div class="order-main-info">
+              <div class="order-date">
+                <span class="label">تاریخ ثبت:</span>
+                <span class="value"><%= new Date(order.createdAt).toLocaleDateString("fa-IR") %></span>
+              </div>
+              <div class="order-status">
+                <span class="status-badge">تکمیل شده</span>
+              </div>
+            </div>
 
-<% orders.forEach(order => { %>
-  <div style="
-    border:1px solid #ddd;
-    padding:15px;
-    margin-bottom:20px;
-    border-radius:10px;
-  ">
-    <p>
-      <strong>تاریخ:</strong>
-      <%= new Date(order.createdAt).toLocaleDateString("fa-IR") %>
-    </p>
+            <div class="order-items-box">
+              <p class="items-title">اقلام سفارش داده شده:</p>
+              <ul class="items-list">
+                <% order.items.forEach(item => { %>
+                  <li>
+                    <span class="dot"></span>
+                    <span class="product-name"><%= item.product.title %></span>
+                    <span class="quantity"> (تعداد: <%= item.quantity %>)</span>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
 
-    <ul>
-      <% order.items.forEach(item => { %>
-        <li>
-          <%= item.product.title %>
-          — تعداد: <%= item.quantity %>
-        </li>
-      <% }) %>
-    </ul>
-
-    <p>
-      <strong>مبلغ کل:</strong>
-      <%= order.totalPrice.toLocaleString() %> تومان
-    </p>
+            <div class="order-footer">
+              <div class="total-price">
+                <span class="label">مبلغ کل پرداخت شده:</span>
+                <span class="amount"><%= order.totalPrice.toLocaleString() %> <span>تومان</span></span>
+              </div>
+              <button class="details-btn">جزئیات بیشتر</button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
   </div>
-<% }) %>
+</div>
+
+<style>
+ 
+  .orders-wrapper {
+    background-color: #F9F7F2; 
+    min-height: 100vh;
+    padding: 50px 20px;
+    font-family: 'Tahoma', sans-serif;
+    direction: rtl;
+  }
+
+  .orders-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 25px;
+    border: 1px solid #D7C0AE;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(150, 126, 118, 0.05);
+  }
+
+  .orders-header h2 { color: #2D2424; margin: 0; }
+  .orders-header p { color: #967E76; margin: 5px 0 0 0; font-size: 0.9rem; }
+  .header-icon { font-size: 40px; }
+
+  
+  .order-card {
+    background: #ffffff;
+    border: 1px solid #D7C0AE;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .order-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 40px rgba(150, 126, 118, 0.15);
+    border-color: #967E76;
+  }
+
+  .order-main-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EEE3CB;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  .order-date .label { color: #967E76; font-size: 0.85rem; }
+  .order-date .value { color: #2D2424; font-weight: bold; margin-right: 5px; }
+
+  .status-badge {
+    background: #EEE3CB;
+    color: #967E76;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+
+  
+  .items-title { color: #2D2424; font-weight: bold; font-size: 0.95rem; margin-bottom: 10px; }
+  .items-list { list-style: none; padding: 0; margin: 0; }
+  .items-list li {
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    color: #555;
+    font-size: 0.9rem;
+  }
+  .dot { width: 8px; height: 8px; background: #D7C0AE; border-radius: 50%; margin-left: 10px; }
+
+ 
+  .order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #EEE3CB;
+  }
+
+  .total-price .label { color: #967E76; font-size: 0.9rem; }
+  .total-price .amount { color: #2D2424; font-size: 1.3rem; font-weight: 800; margin-right: 8px; }
+  .total-price .amount span { font-size: 0.8rem; }
+
+  .details-btn {
+    background: transparent;
+    border: 1px solid #967E76;
+    color: #967E76;
+    padding: 8px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .details-btn:hover {
+    background: #967E76;
+    color: #ffffff;
+  }
+
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-up {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px;
+    background: #fff;
+    border-radius: 30px;
+    border: 2px dashed #D7C0AE;
+  }
+
+  .browse-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: #967E76;
+    color: #EEE3CB;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: 0.3s;
+  }
+
+  .browse-btn:hover { background: #2D2424; color: #fff; }
+</style>
